@@ -1,0 +1,13 @@
+logs
+project/project
+project/target
+target
+tmp
+.history
+.cache
+.classpath
+.project
+.settings
+.target
+*.swp
+dist
