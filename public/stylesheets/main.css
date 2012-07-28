@@ -2,3 +2,7 @@
   text-decoration: line-through;
   color: grey;
 }
+
+.tasks li{
+  list-style: none;
+}
