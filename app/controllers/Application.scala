@@ -76,7 +76,7 @@ object Application extends Controller with LiftJson {
           routes.javascript.Application.doneTask,
           routes.javascript.Application.undoneTask
       )
-    ).as("application/json")
+    ).as("text/javascript")
   }
   
 }
