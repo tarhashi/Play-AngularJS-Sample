@@ -3,8 +3,6 @@ package controllers
 import play.api._
 import play.api.mvc._
 
-import com.github.tototoshi.play2.json.LiftJson
-import net.liftweb.json._
 import org.squeryl.PrimitiveTypeMode._
 import models.AppDB
 import models.Task
@@ -14,10 +12,16 @@ import play.api.data._
 import play.api.data.Form
 import play.api.data.Forms._
 import views._
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
 
-object Application extends Controller with LiftJson {
+object Application extends Controller {
   
-  implicit val formats = DefaultFormats
+  implicit val taskFormat = (
+    (__ \ "id").format[Long] and
+    (__ \ "label").format[String] and
+    (__ \ "done").format[Boolean]
+  )(models.Task.apply, unlift(models.Task.unapply))
   
   val taskForm = Form(
     mapping(
@@ -37,7 +41,7 @@ object Application extends Controller with LiftJson {
       val t = from(AppDB.taskTable)(t =>where(t.done === false) select(t))
       t.toList
     }
-    Ok(Extraction.decompose(tasks)).as("application/json")
+    Ok(Json.toJson(tasks)).as("application/json")
   }
   
   def newTask = Action { implicit request =>
@@ -45,7 +49,7 @@ object Application extends Controller with LiftJson {
       val t = inTransaction(AppDB.taskTable insert task )
       t
     }
-    Ok(Extraction.decompose(t)).as("application/json")
+    Ok(Json.toJson(t)).as("application/json")
   }
   
   def doneTask(id: Long) = Action { implicit request =>
@@ -55,7 +59,7 @@ object Application extends Controller with LiftJson {
       set(t.done := true)
       )
     }
-    Ok(Extraction.decompose(t)).as("application/json")
+    Ok(Json.toJson(t)).as("application/json")
   }
   def undoneTask(id: Long) = Action { implicit request =>
     val t = inTransaction{
@@ -64,7 +68,7 @@ object Application extends Controller with LiftJson {
       set(t.done := false)
       )
     }
-    Ok(Extraction.decompose(t)).as("application/json")
+    Ok(Json.toJson(t)).as("application/json")
   }
   
   def javascriptRoutes() = Action { implicit request =>

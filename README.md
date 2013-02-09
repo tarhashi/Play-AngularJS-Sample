@@ -1,4 +1,4 @@
-# Play Framework 2.0 + AngularJS + Squeryl + lift-json Sample
+# Play Framework 2.1 + AngularJS + Squeryl Sample
 
-Play Framework 2.0.2,AngularJS,Squeryl,lift-jsonを組み合わせたTODOアプリのサンプルです。
+Play Framework 2.1.0,AngularJS,Squerylを組み合わせたTODOアプリのサンプルです。
 
